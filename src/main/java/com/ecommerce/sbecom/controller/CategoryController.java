@@ -18,14 +18,15 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/api/public/categories")
-    public List<Category> getAllCategories() {
-        return this.categoryService.getAllCategories();
+    public ResponseEntity<?> getAllCategories() {
+        List<Category> categories = this.categoryService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping("/api/public/categories")
-    public String createCategory(@RequestBody Category category) {
+    public ResponseEntity<String> createCategory(@RequestBody Category category) {
         this.categoryService.createCategory(category);
-        return "Category Added Successfully!";
+        return new ResponseEntity<>("Category created successfully", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/admin/categories/{categoryId}")

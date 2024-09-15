@@ -39,11 +39,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Category category,Long id) {
+    public void updateCategory(Category category,Long id) {
         Category category1 = categories.stream().filter(c -> c.getCategoryId() == id).findFirst().
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
         category1.setCategoryName(category.getCategoryName());
-        return category1;
     }
 
 

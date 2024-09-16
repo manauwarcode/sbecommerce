@@ -41,12 +41,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category category,Long id) {
-        List<Category> categories = this.categoryRepository.findAll();
-        Category category1 = categories.stream().filter(c -> c.getCategoryId() == id).findFirst().
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
-        category1.setCategoryName(category.getCategoryName());
-        categoryRepository.save(category1);
-        return category1;
+          Category savedCategory = this.categoryRepository.findById(id).
+                  orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category with id " + id + " not found "));
+          savedCategory.setCategoryName(category.getCategoryName());
+          this.categoryRepository.save(savedCategory);
+          return savedCategory;
     }
 
 

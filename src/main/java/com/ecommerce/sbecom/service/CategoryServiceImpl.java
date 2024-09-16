@@ -30,11 +30,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String deleteCategory(Long id) {
-        List<Category> categories = this.categoryRepository.findAll();
-        Category category = categories.stream().filter(c -> c.getCategoryId() == id).findFirst().
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
 
-        categoryRepository.delete(category);
+        Category deletedCategory = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category with id " + id + " not found "));
+
+        categoryRepository.delete(deletedCategory);
 
         return "Category with category id " + id +" deleted successfully!";
     }

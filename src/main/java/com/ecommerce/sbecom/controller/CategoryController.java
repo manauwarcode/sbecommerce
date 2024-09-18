@@ -40,8 +40,8 @@ public class CategoryController {
     }
 
     @PutMapping("/public/category/{categoryId}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category,@PathVariable Long categoryId) {
-            Category savedCategory = this.categoryService.updateCategory(category,categoryId);
-            return new ResponseEntity<>("Category updated successfully", HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO,@PathVariable Long categoryId) {
+            CategoryDTO savedCategoryDTO = this.categoryService.updateCategory(categoryDTO,categoryId);
+            return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
     }
 }

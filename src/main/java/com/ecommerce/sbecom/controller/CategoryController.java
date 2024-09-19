@@ -1,6 +1,7 @@
 package com.ecommerce.sbecom.controller;
 
 
+import com.ecommerce.sbecom.config.AppConstants;
 import com.ecommerce.sbecom.payload.CategoryDTO;
 import com.ecommerce.sbecom.payload.CategoryResponse;
 import com.ecommerce.sbecom.service.CategoryService;
@@ -22,8 +23,8 @@ public class CategoryController {
 
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategories(
-            @RequestParam(name="pageNumber") Integer pageNumber,
-            @RequestParam(name="pageSize") Integer pageSize
+            @RequestParam(name="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize
     ) {
         CategoryResponse categoryResponse = this.categoryService.getAllCategories(pageNumber, pageSize);
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);

@@ -20,5 +20,4 @@ public class CategoryResponse {
     private Integer totalPages;
     private boolean lastPage;
 
-
 }

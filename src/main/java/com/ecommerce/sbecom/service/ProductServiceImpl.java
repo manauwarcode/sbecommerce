@@ -1,5 +1,6 @@
 package com.ecommerce.sbecom.service;
 
+import com.ecommerce.sbecom.exceptions.ApiException;
 import com.ecommerce.sbecom.exceptions.ResourceNotFoundException;
 import com.ecommerce.sbecom.model.Category;
 import com.ecommerce.sbecom.model.Product;
@@ -9,10 +10,13 @@ import com.ecommerce.sbecom.repositories.CategoryRepository;
 import com.ecommerce.sbecom.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -40,12 +44,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getAllProducts() {
+    public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize) {
+
         ProductResponse productResponse = new ProductResponse();
-        List<Product> products = this.productRepository.findAll();
-        List<ProductDTO> productDTOS = products.stream().
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize);
+
+        Page<Product> productPage = this.productRepository.findAll(pageDetails);
+
+        List<Product> productList = productPage.getContent();
+
+        if(productList.isEmpty()){
+            throw new ApiException("There is not products in the database!!");
+        }
+
+        List<ProductDTO> productDTOS = productList.stream().
                 map(product -> this.modelMapper.map(product, ProductDTO.class)).toList();
+
         productResponse.setContent(productDTOS);
+        productResponse.setPageNumber(productPage.getNumber());
+        productResponse.setPageSize(productPage.getSize());
+        productResponse.setTotalPages(productPage.getTotalPages());
+        productResponse.setTotalElements(productPage.getTotalElements());
+        productResponse.setLastPage(productPage.isLast());
         return productResponse;
     }
 }

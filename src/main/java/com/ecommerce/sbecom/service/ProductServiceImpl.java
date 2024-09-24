@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,11 +45,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize) {
+    public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize,String sortBy,String sortOrder) {
+
+        Sort sortByAndOrder = sortOrder.equals("asc")
+                ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         ProductResponse productResponse = new ProductResponse();
 
-        Pageable pageDetails = PageRequest.of(pageNumber, pageSize);
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize,sortByAndOrder);
 
         Page<Product> productPage = this.productRepository.findAll(pageDetails);
 

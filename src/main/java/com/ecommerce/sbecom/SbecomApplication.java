@@ -28,9 +28,11 @@ class StartUpRunner implements CommandLineRunner {
 			boolean success = imageFolder.mkdir();
 			if(success) {
 				System.out.println("Directory created: " + imageFolder.getAbsolutePath());
-			}else{
+			}else {
 				System.out.println("Failed to create directory: " + imageFolder.getAbsolutePath());
 			}
+		}else {
+			System.out.println("Directory already exists: " + imageFolder.getAbsolutePath());
 		}
 	}
 }

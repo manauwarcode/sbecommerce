@@ -17,7 +17,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -120,12 +125,42 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO updateProductImage(Long productId, MultipartFile image) {
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
          //get the product from db
-        // upload the image to server
+        Product product = this.productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
+
+        // upload the image to folder
         // Get the file name of uploaded image
+
+        String path = "src/main/resources/images/";
+
+        String imageName = uploadImage(path,image);
+
         // updating the new file to product
+        product.setImage(imageName);
+
+        //save the updated product
+        Product updatedProduct = this.productRepository.save(product);
+
         // return dto
-        return null;
+        return this.modelMapper.map(updatedProduct, ProductDTO.class);
+    }
+
+    private String uploadImage(String path, MultipartFile file) throws IOException {
+        //File names of current/ original file
+        String originalFilename = file.getOriginalFilename();
+
+        //Generate a unique file name
+        String randomId = UUID.randomUUID().toString();
+        String fileName = randomId.concat(originalFilename.substring(originalFilename.lastIndexOf(".")));
+        String filePath = path + File.separator + fileName;
+
+
+        //upload to folder
+        Files.copy(file.getInputStream(), Paths.get(filePath));
+
+        //return file name
+        return fileName;
     }
 }

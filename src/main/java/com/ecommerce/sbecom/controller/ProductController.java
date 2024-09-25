@@ -1,7 +1,6 @@
 package com.ecommerce.sbecom.controller;
 
 import com.ecommerce.sbecom.config.AppConstants;
-import com.ecommerce.sbecom.model.Product;
 import com.ecommerce.sbecom.payload.ProductDTO;
 import com.ecommerce.sbecom.payload.ProductResponse;
 import com.ecommerce.sbecom.service.ProductService;
@@ -48,5 +47,11 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getProductByKeyword(@PathVariable String keyword){
         ProductResponse productResponse = this.productService.searchProductsByKeyword(keyword);
         return new ResponseEntity<>(productResponse,HttpStatus.FOUND);
+    }
+
+    @PutMapping("/admin/products/{productId}")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO,@PathVariable Long productId){
+        ProductDTO updateProductDTO = this.productService.updateProduct(productId,productDTO);
+        return new ResponseEntity<>(updateProductDTO,HttpStatus.OK);
     }
 }

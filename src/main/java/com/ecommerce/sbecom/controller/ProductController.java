@@ -1,6 +1,7 @@
 package com.ecommerce.sbecom.controller;
 
 import com.ecommerce.sbecom.config.AppConstants;
+import com.ecommerce.sbecom.payload.CategoryDTO;
 import com.ecommerce.sbecom.payload.ProductDTO;
 import com.ecommerce.sbecom.payload.ProductResponse;
 import com.ecommerce.sbecom.service.ProductService;
@@ -53,5 +54,11 @@ public class ProductController {
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO,@PathVariable Long productId){
         ProductDTO updateProductDTO = this.productService.updateProduct(productId,productDTO);
         return new ResponseEntity<>(updateProductDTO,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/products/{productId}")
+    public ResponseEntity<ProductDTO> deleteCategory(@PathVariable Long productId) {
+        ProductDTO productDTO =  this.productService.deleteCategory(productId);
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 }

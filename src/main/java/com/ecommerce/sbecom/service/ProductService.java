@@ -2,6 +2,7 @@ package com.ecommerce.sbecom.service;
 
 import com.ecommerce.sbecom.payload.ProductDTO;
 import com.ecommerce.sbecom.payload.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface ProductService {
@@ -18,4 +19,6 @@ public interface ProductService {
     ProductDTO updateProduct(Long productId,ProductDTO productDTO);
 
     ProductDTO deleteCategory(Long productId);
+
+    ProductDTO updateProductImage(Long productId, MultipartFile image);
 }

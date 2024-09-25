@@ -1,7 +1,12 @@
 package com.ecommerce.sbecom;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.nio.file.Files;
 
 @SpringBootApplication
 public class SbecomApplication {
@@ -10,4 +15,22 @@ public class SbecomApplication {
 		SpringApplication.run(SbecomApplication.class, args);
 	}
 
+}
+
+@Component
+class StartUpRunner implements CommandLineRunner {
+
+	@Override
+	public void run(String... args) throws Exception {
+		String imageFolderPath = "src/main/resources/images";
+		File imageFolder = new File(imageFolderPath);
+		if(!imageFolder.exists()) {
+			boolean success = imageFolder.mkdir();
+			if(success) {
+				System.out.println("Directory created: " + imageFolder.getAbsolutePath());
+			}else{
+				System.out.println("Failed to create directory: " + imageFolder.getAbsolutePath());
+			}
+		}
+	}
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -60,5 +61,11 @@ public class ProductController {
     public ResponseEntity<ProductDTO> deleteCategory(@PathVariable Long productId) {
         ProductDTO productDTO =  this.productService.deleteCategory(productId);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/product/{productId}/image")
+    public ResponseEntity<ProductDTO> updateProductImage(@PathVariable Long productId, @RequestParam("image") MultipartFile image) {
+        ProductDTO updatedProduct = this.productService.updateProductImage(productId,image);
+        return new ResponseEntity<>(updatedProduct,HttpStatus.OK);
     }
 }

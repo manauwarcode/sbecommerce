@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -116,5 +117,15 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = this.modelMapper.map(product, ProductDTO.class);
         this.productRepository.delete(product);
         return productDTO;
+    }
+
+    @Override
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) {
+         //get the product from db
+        // upload the image to server
+        // Get the file name of uploaded image
+        // updating the new file to product
+        // return dto
+        return null;
     }
 }

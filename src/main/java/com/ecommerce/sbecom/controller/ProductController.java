@@ -1,7 +1,5 @@
 package com.ecommerce.sbecom.controller;
-
 import com.ecommerce.sbecom.config.AppConstants;
-import com.ecommerce.sbecom.payload.CategoryDTO;
 import com.ecommerce.sbecom.payload.ProductDTO;
 import com.ecommerce.sbecom.payload.ProductResponse;
 import com.ecommerce.sbecom.service.ProductService;
@@ -11,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")

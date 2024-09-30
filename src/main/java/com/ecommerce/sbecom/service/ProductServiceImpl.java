@@ -44,13 +44,29 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO addProduct(ProductDTO productDTO, Long categoryId) {
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
-        Product product = this.modelMapper.map(productDTO, Product.class);
-        product.setImage("default.png");
-        product.setCategory(category);
-        double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
-        product.setSpecialPrice(specialPrice);
-        Product savedProduct = this.productRepository.save(product);
-        return this.modelMapper.map(savedProduct, ProductDTO.class);
+
+        boolean ifProductNotPresent = true;
+
+        List<Product> products = category.getProducts();
+
+        for(Product product : products) {
+            if(product.getProductName().equals(productDTO.getProductName())) {
+                ifProductNotPresent = false;
+                break;
+            }
+        }
+        if(ifProductNotPresent) {
+            Product product = this.modelMapper.map(productDTO, Product.class);
+            product.setImage("default.png");
+            product.setCategory(category);
+            double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
+            product.setSpecialPrice(specialPrice);
+            Product savedProduct = this.productRepository.save(product);
+            return this.modelMapper.map(savedProduct, ProductDTO.class);
+        }else{
+            throw new ApiException("product already exists");
+        }
+
     }
 
     @Override
@@ -68,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productPage.getContent();
 
         if(productList.isEmpty()){
-            throw new ApiException("There is not products in the database!!");
+            throw new ApiException("There is no  products in the database!!");
         }
 
         List<ProductDTO> productDTOS = productList.stream().
@@ -119,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO deleteCategory(Long productId) {
+    public ProductDTO deleteProduct(Long productId) {
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
         ProductDTO productDTO = this.modelMapper.map(product, ProductDTO.class);
